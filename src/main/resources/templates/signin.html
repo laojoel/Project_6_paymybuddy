@@ -33,8 +33,6 @@
 	  display: flex;
       align-items: center;
 	  justify-content: center;
-	  
-	  
 	}
 
     .textfield {
@@ -87,10 +85,40 @@
 <body>
   <div class="centered-frame">
 	<div class="logo">Pay My Buddy</div>
-    <input class="textfield" type="text" placeholder="Mail">
-    <input class="textfield" type="password" placeholder="Mot de passe">
-	<button class="solid-button">Se connecter</button>
-    <button class="text-button">Créer un compte</button>
+    <input class="textfield" type="text" id="mail" placeholder="Mail">
+    <input class="textfield" type="password" id="pass" placeholder="Mot de passe">
+	
+	<div th:if="${message}" th:utext= "${message}"
+		 style= "color:red;font-style:italic;">
+	</div>
+	
+	<button class="solid-button" id="signIn">Se connecter</button>
+	<form th:action="@{/signup}" method="get"><button class="text-button">Créer un compte</button></form>
   </div>
+  
+  
+  <script>
+	document.getElementById('signIn').addEventListener('click', async function() {
+		const passwordInput = document.getElementById('pass');
+		const password = passwordInput.value;
+		const encoder = new TextEncoder();
+		const data = encoder.encode(password);
+		const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+		const hashArray = Array.from(new Uint8Array(hashBuffer));
+		const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+		
+		//
+		const url = 'http://localhost:8080/signin'; // Replace with the actual endpoint URL
+		const packet = new URLSearchParams();
+		packet.append('mail', document.getElementById('mail').value); // Replace with the actual email
+		packet.append('password', hashHex); // Replace with the actual password
+		fetch(url, {method: 'POST',body: packet})
+.		then(response => {
+			//hold response
+		}).catch(error => {});
+		
+	});
+	</script>
+
 </body>
 </html>

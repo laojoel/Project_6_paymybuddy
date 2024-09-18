@@ -88,7 +88,9 @@
 	<input class="textfield" type="text" placeholder="Mail">
     <input class="textfield" type="password" placeholder="Mot de passe">
 	<button class="solid-button">S'inscrire</button>
-    <button class="text-button">Retour</button>
+    
+	
+	<form th:action="@{/signin}" method="get"><button class="text-button">Retour</button></form>
   </div>
 </body> 
 </html>
