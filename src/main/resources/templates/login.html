@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centered Frame</title>
+  <style>
+    body, html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    .centered-frame {
+	  width: 360px;
+	  height: 490px;
+	  border-radius:1px;
+	  border: 1px solid black;
+      text-align: center;
+    }
+	.logo {
+	  margin: 50px auto 80px;
+      padding: 10px;
+	  border-radius:6px;
+	  border:0px solid #ffffff;
+	  background: linear-gradient(to right, #ffa424, #ff8e24);
+	  font-weight: bold;
+	  color: #ffffff;
+	  font-family: Arial, sans-serif;
+	  height: 26px;
+	  width: 160px;
+	  display: flex;
+      align-items: center;
+	  justify-content: center;
+	  
+	  
+	}
+
+    .textfield {
+	  border-radius:6px;
+	  border:1px solid #d7dee5;
+      display: block;
+      margin: 25px auto;
+      padding: 10px;
+	  font-weight: bold;
+	  transition: border-color 0.3s ease; 
+ 
+    }
+	.textfield:hover{
+	  border:1px solid #69b0f2;
+	}
+	.textfield:focus{
+	  outline:2px solid #69b0f2;
+	}
+    .solid-button {
+	  margin: 80px auto 10px;
+      padding: 10px;
+	  display: block;
+	  border-radius:6px;
+	  border:1px solid #ffffff;
+	  background-color:#2a7bfe;
+	  font-weight: bold;
+	  color: #ffffff;
+	  transition: background-color 0.1s ease;
+    }
+	.solid-button:hover {
+	  background-color: #69b0f2;
+	  cursor: pointer;
+	}
+	.text-button {
+	  margin: 10px auto;
+      padding: 10px;
+	  display: block;
+	  border:1px solid #ffffff;
+	  background-color:#ffffff;
+	  font-weight: bold;
+	  color: #2a7bfe;
+	  transition: background-color 0.1s ease;
+    }
+	.text-button:hover {
+	  cursor: pointer;
+	  color: #69b0f2;
+	}
+  </style>
+</head>
+<body>
+  <div class="centered-frame">
+	<div class="logo">Pay My Buddy</div>
+    <input class="textfield" type="text" placeholder="Mail">
+    <input class="textfield" type="password" placeholder="Mot de passe">
+	<button class="solid-button">Se connecter</button>
+    <button class="text-button">Créer un compte</button>
+  </div>
+</body>
+</html>
