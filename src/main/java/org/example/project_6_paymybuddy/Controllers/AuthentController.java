@@ -25,8 +25,9 @@ public class AuthentController {
     }
 
     @PostMapping("/signin")
-    public String PostSignIn(@RequestParam("mail") String mail, @RequestParam("password") String password) {
+    public String PostSignIn(@RequestParam("mail") String mail, @RequestParam("password") String password, Model model) {
         System.out.println("mail: " + mail + " | password: " + password);
+        model.addAttribute("msg", "Your new message");
         return "signin";
     }
 }
