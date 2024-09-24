@@ -52,7 +52,7 @@
 	  outline:2px solid #69b0f2;
 	}
     .solid-button {
-	  margin: 80px auto 10px;
+	  margin: 40px auto 10px;
       padding: 10px;
 	  display: block;
 	  border-radius:6px;
@@ -87,19 +87,19 @@
         border:1px solid #ffffff;
         background-color:#ffffff;
         font-weight: bold;
-        color: #cc3823;
+		font-family: Arial, sans-serif;
+        font-size: 12px;
+        height: 16px;
     }
   </style>
 </head>
 <body>
   <div class="centered-frame">
 	<div class="logo">Pay My Buddy</div>
-    <input class="textfield" type="text" id="mail" placeholder="Mail">
+    <input class="textfield" type="text" id="email" placeholder="Mail">
     <input class="textfield" type="password" id="pass" placeholder="Mot de passe">
 	
-	<div class="msg" th:if="${msg}" th:text="${msg}">
-		test
-	</div>
+	<div class="msg" th:text="${msg}"  th:style="'color:' + ${color}"></div>
 	
 	<button class="solid-button" id="signIn">Se connecter</button>
 	<form th:action="@{/signup}" method="get"><button class="text-button">Créer un compte</button></form>
@@ -108,23 +108,28 @@
   
   <script>
 	document.getElementById('signIn').addEventListener('click', async function() {
-		const passwordInput = document.getElementById('pass');
-		const password = passwordInput.value;
-		const encoder = new TextEncoder();
-		const data = encoder.encode(password);
-		const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
-		const hashArray = Array.from(new Uint8Array(hashBuffer));
-		const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-		//
-		const url = 'http://localhost:8080/signin'; // Replace with the actual endpoint URL
-		const packet = new URLSearchParams();
-		packet.append('mail', document.getElementById('mail').value); // Replace with the actual email
-		packet.append('password', hashHex); // Replace with the actual password
-		fetch(url, {method: 'POST',body: packet})
-.		then(response => {
-			//hold response
-		}).catch(error => {});
-	});
+        const passwordInput = document.getElementById('pass');
+        const password = passwordInput.value;
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        //
+        const url = 'http://localhost:8080/signin';
+        const packet = new URLSearchParams();
+        packet.append('email', document.getElementById('email').value);
+        packet.append('password', hashHex);
+        fetch(url, {method: 'POST', body: packet})
+            .then(response => response.text())
+            .then(html => {
+                document.open();
+                document.writeln(html);
+                document.close();
+            })
+            .catch(error => {
+            });
+    });
 	</script>
 
 </body>

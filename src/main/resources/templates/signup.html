@@ -51,7 +51,7 @@
 	  outline:2px solid #69b0f2;
 	}
     .solid-button {
-	  margin: 50px auto 10px;
+	  margin: 10px auto 10px;
       padding: 10px;
 	  display: block;
 	  border-radius:6px;
@@ -79,18 +79,56 @@
 	  cursor: pointer;
 	  color: #69b0f2;
 	}
+    .msg {
+        margin: 3px auto;
+        padding: 10px;
+        display: block;
+        border:1px solid #ffffff;
+        background-color:#ffffff;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        height: 16px;
+    }
   </style>
 </head>
 <body>
   <div class="centered-frame">
 	<div class="logo">Pay My Buddy</div>
-    <input class="textfield" type="text" placeholder="Nom d'utilisateur">
-	<input class="textfield" type="text" placeholder="Mail">
-    <input class="textfield" type="password" placeholder="Mot de passe">
-	<button class="solid-button">S'inscrire</button>
-    
-	
+    <input class="textfield" type="text" id="username" placeholder="Nom d'utilisateur">
+	<input class="textfield" type="text" id="email" placeholder="Mail">
+    <input class="textfield" type="password"  id="pass" placeholder="Mot de passe">
+
+      <div class="msg" th:text="${msg}" th:style="'color:' + ${color}"></div>
+
+	<button class="solid-button" id="signUp">S'inscrire</button>
 	<form th:action="@{/signin}" method="get"><button class="text-button">Retour</button></form>
   </div>
+  <script>
+      document.getElementById('signUp').addEventListener('click', async function() {
+          const passwordInput = document.getElementById('pass');
+          const password = passwordInput.value;
+          const encoder = new TextEncoder();
+          const data = encoder.encode(password);
+          const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          //
+          const url = 'http://localhost:8080/signup';
+          const packet = new URLSearchParams();
+          packet.append('username', document.getElementById('username').value);
+          packet.append('email', document.getElementById('email').value);
+          packet.append('password', hashHex);
+          fetch(url, {method: 'POST', body: packet})
+              .then(response => response.text())
+              .then(html => {
+                  document.open();
+                  document.writeln(html);
+                  document.close();
+              })
+              .catch(error => {
+              });
+      });
+  </script>
 </body> 
 </html>

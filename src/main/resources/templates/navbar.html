@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centered Frame</title>
+  <style>
+    body, html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<form th:action="@{/signup}" method="get"><button class="text-button">Transférer</button></form>
+<form th:action="@{/signup}" method="get"><button class="text-button">Profil</button></form>
+<form th:action="@{/signup}" method="get"><button class="text-button">Ajouter une relation</button></form>
+<form th:action="@{/signup}" method="get"><button class="text-button">Se déconnecter</button></form>
+
+</body>
+</html>
