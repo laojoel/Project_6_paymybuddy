@@ -8,12 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class TransactionController {
-
-    @GetMapping("/transaction")
+public class BeneficiaryController {
+    @GetMapping("/beneficiary")
     public String getSignIn(Model model) {
+
         List<String> options = Arrays.asList("Max Dunoix", "Estelle Frost", "Maximum Brutus");
         model.addAttribute("options", options);
-        return "transaction";
+        return "beneficiary";
     }
 }

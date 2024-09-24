@@ -5,20 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centered Frame</title>
   <style>
-    body, html {
-      height: 100%;
+    .navbar {
+      top:0;
+      left:0;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      margin: 0;
+      background-color: #ffffff;
+      padding: 42px;
+    }
+    .nav-left {
+      flex: 1;
+    }
+    .nav-right {
+      display: flex;
+      gap: 26px;
+    }
+    .nav-button{
+      background-color: #ffffff;
+      border: none;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.1s ease;
+      color: #000000;
+      padding: 12px;
+    }
+    .nav-button:hover {
+      color: #2a7bfe;
+      cursor: pointer;
+    }
+    .nav-logo{
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
-<form th:action="@{/signup}" method="get"><button class="text-button">Transférer</button></form>
-<form th:action="@{/signup}" method="get"><button class="text-button">Profil</button></form>
-<form th:action="@{/signup}" method="get"><button class="text-button">Ajouter une relation</button></form>
-<form th:action="@{/signup}" method="get"><button class="text-button">Se déconnecter</button></form>
-
+<nav th:fragment="navbar" class="navbar">
+  <div class="nav-left">
+    <span class="nav-logo">Pay My Buddy</span>
+  </div>
+  <div class="nav-right">
+    <form th:action="@{/signup}" method="get"><button class="nav-button">Transférer</button></form>
+    <form th:action="@{/signup}" method="get"><button class="nav-button">Profil</button></form>
+    <form th:action="@{/signup}" method="get"><button class="nav-button">Ajouter une relation</button></form>
+    <form th:action="@{/logout}" method="get"><button class="nav-button">Se déconnecter</button></form>
+  </div>
+</nav>
 </body>
 </html>

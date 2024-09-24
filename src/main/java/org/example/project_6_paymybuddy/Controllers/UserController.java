@@ -31,14 +31,16 @@ public class UserController {
         if (token == null) {
             model.addAttribute("msg", "mail et/ou mot de passe erroné(s)");
             model.addAttribute("color", "#cc3823");
+            return "signin";
         }
         else {
-            model.addAttribute("msg", "OK !");
-            model.addAttribute("color", "#cc3823");
+            //model.addAttribute("msg", "OK !");
+            //model.addAttribute("color", "#cc3823");
+            return "transfert";
         }
 
 
-        return "signin";
+
     }
 
     @GetMapping("/signup")
@@ -48,7 +50,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public String PostSignUp(@RequestParam("username") String userName, @RequestParam("email") String email, @RequestParam("password") String password, Model model) {
-        System.out.println(userName + " | " + email + " | " + password);
         String page = "", message = "", color = "";
         byte userCreationCode = userService.createNewUser(userName, email, password);
         if (userCreationCode == USER_CREATION_WRONG_INPUTS) {page="signup"; message = "Les informations saisie sont érroné"; color = "#cc3823";}
@@ -57,5 +58,18 @@ public class UserController {
         model.addAttribute("msg", message);
         model.addAttribute("color", color);
         return page;
+    }
+
+    @GetMapping("/logout")
+    public String getLogout(Model model) {
+        model.addAttribute("msg", "Vous avez été déconnecté avec succès");
+        model.addAttribute("color", "#339933");
+        return "signin";
+    }
+
+    @GetMapping("/navbar")
+    public String getNavBar() {
+        System.out.println("NAV OK");
+        return "navbar";
     }
 }

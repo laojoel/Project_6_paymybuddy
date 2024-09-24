@@ -16,6 +16,13 @@
 </head>
 <body>
   <span th:insert="navbar :: navbar"/>
-  <div class="centered-frame">mainframe</div>
+  <div class="content">
+    <form method="post" action="/submit">
+      <label>Chercher une relation</label>
+      <select id="dropdown" name="selectedOption">
+        <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+      </select>
+    </form>
+  </div>
 </body>
 </html>
