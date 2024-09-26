@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centered Frame</title>
+  <style>
+    #navbar {
+      height: 50px;
+    }
+    .content {
+      padding-top: 200px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    .profile {
+      width: fit-content;
+      height: auto;
+      border: none;
+    }
+    .label {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 14px;
+      text-align: left;
+      width: 148px;
+    }
+    .row {
+      display: flex;
+      padding-bottom: 16px;
+    }
+    .button {
+      border: none;
+      color: #424242;
+      transition: background-color 0.1s ease;
+      background-color: white;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+    }
+    button:hover svg {
+        fill: #26395e;
+    }
+    .button:hover {
+        color: #2a7bfe;
+      cursor: pointer;
+        fill: #69b0f2;
+    }
+    .svg-arrow {
+        position: relative;
+        top:1px;
+    }
+  </style>
+</head>
+<body>
+<input type="hidden" name="token" th:value="${session.token}"/>
+<div id="navbar"></div>
+<div class="content">
+  <div class="profile">
+    <div class="row">
+      <label class="label" for="username">Nom d'utilisateur</label>
+      <button class="button" id="username">
+          username
+          <svg class="svg-arrow" fill="#7A7A7AFF" height="10px" width="12px" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
+              <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z"/></svg>
+      </button>
+
+    </div>
+    <div class="row">
+      <label class="label" for="email">Email</label>
+      <button class="button"id="email">Button 2
+          fdhfesoihfsoi
+          <svg class="svg-arrow" fill="#7A7A7AFF" height="10px" width="12px" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
+              <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z"/></svg>
+      </button>
+    </div>
+    <div class="row">
+      <label class="label" for="password">Mot de passe</label>
+      <button class="button" id="password">
+          fsojfoifseoife
+          <svg class="svg-arrow" fill="#7A7A7AFF" height="10px" width="12px" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
+              <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+  <script>
+    fetch('http://localhost:8080/navbar')
+            .then(response => response.text())
+            .then(data => {
+              document.getElementById('navbar').innerHTML = data;
+            })
+  </script>
+</body>
+</html>

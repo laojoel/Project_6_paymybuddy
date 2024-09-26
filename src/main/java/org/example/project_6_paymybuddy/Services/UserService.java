@@ -25,17 +25,28 @@ public class UserService {
         else {userProxy.createUser(username,email,password); return  USER_CREATION_SUCCESS;}
     }
 
-    public String authenticateUser(String email, String password) {
+    public User authenticateUser(String email, String password) {
         User user = userProxy.authenticateUser(email, password);
         if (user == null) {
             return null;
         }
         else {
-            byte[] tokenBuffer = new byte[32]; // 32 bytes = 256 bits
+            byte[] tokenBuffer = new byte[TOKEN_BYTE_SIZE];
             secureRandom.nextBytes(tokenBuffer);
             String token = Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBuffer);
             userProxy.setToken(user.id, token);
-            return token;
+            user.token = token;
+            return user;
         }
+    }
+
+    public void revokeToken(int id) {
+        userProxy.setToken(id, "x");
+    }
+
+    public User getUserWithToken(String token) {
+        if (token==null) {return null;}
+        else if (token.length() != TOKEN_STRING_LEN) {return null;}
+        else {return userProxy.findUserWithToken(token);}
     }
 }

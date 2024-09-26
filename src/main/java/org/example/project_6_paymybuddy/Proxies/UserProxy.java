@@ -19,10 +19,14 @@ public interface UserProxy extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u WHERE u.email = :email AND u.password = :password")
     User authenticateUser(@Param("email") String email, @Param("password") String password);
 
+    @Query("SELECT u FROM User u WHERE u.token = :token")
+    User findUserWithToken(@Param("token") String token);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE User u SET u.token = :token WHERE u.id = :id")
     void setToken(int id, String token);
+
 
     @Query("SELECT u FROM User u WHERE u.email = :email OR u.username = :username")
     User findUserByMailOrUsername(@Param("username") String username, @Param("email") String email);
@@ -31,4 +35,7 @@ public interface UserProxy extends JpaRepository<User,Long> {
     @Modifying
     @Query(value = "INSERT INTO users (username, email, password) VALUES (?1, ?2, ?3)", nativeQuery = true)
     void createUser(String username, String email, String password);
+
+    @Query("SELECT u FROM User u WHERE u.token = :token")
+    User findUserByToken(@Param("token") String token);
 }

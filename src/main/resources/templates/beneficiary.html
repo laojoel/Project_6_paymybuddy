@@ -5,12 +5,76 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centered Frame</title>
   <style>
+    #navbar {
+      height: 50px;
+    }
+    .content {
+      padding-top: 200px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    .search {
+      width: fit-content;
+      height: auto;
+      border: none;
+    }
+    .tittle{
+      padding-left: 10px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: left;
+    }
+    .textfield {
+      width: 300px;
+      border-radius:6px;
+      border:1px solid #d7dee5;
+      padding: 10px;
+      font-weight: bold;
+      transition: border-color 0.3s ease;
+    }
+    .textfield:hover{
+      border:1px solid #69b0f2;
+    }
+    .textfield:focus{
+      outline:2px solid #69b0f2;
+    }
+    .solid-button {
+      padding: 10px 25px;
+      border-radius:6px;
+      border:1px solid #ffffff;
+      background-color: #ffa024;
+      font-weight: bold;
+      color: #ffffff;
+      transition: background-color 0.1s ease;
+    }
+    .solid-button:hover {
+      background-color: #ffb14f;
+      cursor: pointer;
+    }
 
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 10px;
+      display: flex;
+    }
   </style>
 </head>
 <body>
 <div id="navbar"></div>
 <div class="content">
+  <div class="search">
+    <div class="tittle">Chercher une relation</div>
+    <div class="search-bar">
+      <input class="textfield" type="text" id="beneficiary" placeholder="Saisir une adresse mail">
+      <button class="solid-button" id="Ajouter">Ajouter</button>
+    </div>
+  </div>
 
 </div>
 

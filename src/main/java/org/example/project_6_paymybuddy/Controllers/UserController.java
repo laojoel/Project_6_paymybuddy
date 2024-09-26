@@ -1,5 +1,9 @@
 package org.example.project_6_paymybuddy.Controllers;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.example.project_6_paymybuddy.Models.User;
 import org.example.project_6_paymybuddy.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,18 +29,20 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public String PostSignIn(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
-
-        String token = userService.authenticateUser(email, password);
-        if (token == null) {
+    public String PostSignIn(@RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response) {
+        User user = userService.authenticateUser(email, password);
+        if (user == null) {
+            System.out.println("fail");
             model.addAttribute("msg", "mail et/ou mot de passe erroné(s)");
             model.addAttribute("color", "#cc3823");
             return "signin";
         }
         else {
-            //model.addAttribute("msg", "OK !");
-            //model.addAttribute("color", "#cc3823");
-            return "transfert";
+            Cookie cookie = new Cookie("token", user.token);
+            response.addCookie(cookie);
+            model.addAttribute("id", user.id);
+            model.addAttribute("token", user.token);
+            return "transaction";
         }
 
 
@@ -61,7 +67,10 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String getLogout(Model model) {
+    public String getLogout(Model model, HttpServletRequest request) {
+        User user = userService.getUserWithToken((String)request.getAttribute("token"));
+        if(user!=null){userService.revokeToken(user.id);}
+
         model.addAttribute("msg", "Vous avez été déconnecté avec succès");
         model.addAttribute("color", "#339933");
         return "signin";
@@ -69,7 +78,19 @@ public class UserController {
 
     @GetMapping("/navbar")
     public String getNavBar() {
-        System.out.println("NAV OK");
         return "navbar";
     }
+
+    @GetMapping("/profile")
+    public String getProfile(HttpServletRequest request) {
+        User user = userService.getUserWithToken((String)request.getAttribute("token"));
+        if (user!=null) {
+            return "profile";
+        }
+        else {
+            return "signin";
+        }
+    }
+
+
 }

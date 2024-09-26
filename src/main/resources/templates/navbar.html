@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centered Frame</title>
   <style>
+
     .navbar {
       top:0;
       left:0;
@@ -48,9 +49,9 @@
     <span class="nav-logo">Pay My Buddy</span>
   </div>
   <div class="nav-right">
-    <form th:action="@{/signup}" method="get"><button class="nav-button">Transférer</button></form>
-    <form th:action="@{/signup}" method="get"><button class="nav-button">Profil</button></form>
-    <form th:action="@{/signup}" method="get"><button class="nav-button">Ajouter une relation</button></form>
+    <form th:action="@{/transaction}" method="get"><button class="nav-button">Transférer</button></form>
+    <form th:action="@{/profile}" method="get"><button class="nav-button">Profil</button></form>
+    <form th:action="@{/beneficiary}" method="get"><button class="nav-button">Ajouter une relation</button></form>
     <form th:action="@{/logout}" method="get"><button class="nav-button">Se déconnecter</button></form>
   </div>
 </nav>
