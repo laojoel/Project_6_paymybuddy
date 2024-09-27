@@ -37,20 +37,50 @@
       color: #424242;
       transition: background-color 0.1s ease;
       background-color: white;
-        font-family: Arial, sans-serif;
-        font-weight: bold;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
     }
     button:hover svg {
         fill: #26395e;
     }
     .button:hover {
-        color: #2a7bfe;
+      color: #2a7bfe;
       cursor: pointer;
-        fill: #69b0f2;
+      fill: #69b0f2;
+    }
+    .textfield {
+        border: none;
+        color: #424242;
+        transition: background-color 0.1s ease;
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .textfield:hover {
+        color: #2a7bfe;
+    }
+    .textfield:focus {
+        color: #424242;
     }
     .svg-arrow {
         position: relative;
         top:1px;
+    }
+    .solid-button {
+        padding: 10px 25px;
+        border-radius:6px;
+        border:1px solid #ffffff;
+        background-color: #ffa024;
+        font-weight: bold;
+        color: #ffffff;
+        transition: background-color 0.1s ease;
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    .solid-button:hover {
+        background-color: #ffb14f;
+        cursor: pointer;
     }
   </style>
 </head>
@@ -61,39 +91,63 @@
   <div class="profile">
     <div class="row">
       <label class="label" for="username">Nom d'utilisateur</label>
-      <button class="button" id="username">
-          username
-          <svg class="svg-arrow" fill="#7A7A7AFF" height="10px" width="12px" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
-              <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z"/></svg>
-      </button>
-
+       <input class="textfield" type="text" id="username" th:value="${username}">
     </div>
     <div class="row">
-      <label class="label" for="email">Email</label>
-      <button class="button"id="email">Button 2
-          fdhfesoihfsoi
-          <svg class="svg-arrow" fill="#7A7A7AFF" height="10px" width="12px" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
-              <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z"/></svg>
-      </button>
+      <label class="label" for="email">Mail</label>
+        <input class="textfield" type="text" id="email" th:value="${email}">
     </div>
     <div class="row">
       <label class="label" for="password">Mot de passe</label>
-      <button class="button" id="password">
-          fsojfoifseoife
-          <svg class="svg-arrow" fill="#7A7A7AFF" height="10px" width="12px" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
-              <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001  c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213  C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606  C255,161.018,253.42,157.202,250.606,154.389z"/></svg>
-      </button>
+        <input class="textfield" type="password" id="pass" th:value="${password}" onchange="pass_change()">
     </div>
+    <button class="solid-button" id="modify">Modifier</button>
   </div>
 
 </div>
 
   <script>
+    let didPassChanged = false;
+    function pass_change() {
+      didPassChanged = true;
+      alert("Sig")
+    }
     fetch('http://localhost:8080/navbar')
             .then(response => response.text())
             .then(data => {
               document.getElementById('navbar').innerHTML = data;
             })
+
+    document.getElementById('modify').addEventListener('click', async function() {
+      const url = 'http://localhost:8080/profile';
+      const packet = new URLSearchParams();
+      packet.append('username', document.getElementById('username').value);
+      packet.append('email', document.getElementById('email').value);
+
+      if(didPassChanged) {
+        const passwordInput = document.getElementById('pass');
+        const password = passwordInput.value;
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        packet.append('password', hashHex);
+      }
+      else {
+        packet.append('password', "false");
+      }
+
+      fetch(url, {method: 'POST', body: packet})
+              .then(response => response.text())
+              .then(html => {
+                document.open();
+                document.writeln(html);
+                document.close();
+              })
+              .catch(error => {
+              });
+    });
   </script>
 </body>
 </html>

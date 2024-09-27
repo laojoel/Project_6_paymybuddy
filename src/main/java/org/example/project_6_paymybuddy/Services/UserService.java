@@ -49,4 +49,8 @@ public class UserService {
         else if (token.length() != TOKEN_STRING_LEN) {return null;}
         else {return userProxy.findUserWithToken(token);}
     }
+
+    public void updateUserProfile(int id, String username, String email, String password) {
+        userProxy.updateUserProfile(id, username,email,password);
+    }
 }

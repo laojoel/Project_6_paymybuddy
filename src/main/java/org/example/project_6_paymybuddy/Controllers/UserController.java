@@ -44,9 +44,6 @@ public class UserController {
             model.addAttribute("token", user.token);
             return "transaction";
         }
-
-
-
     }
 
     @GetMapping("/signup")
@@ -82,9 +79,25 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String getProfile(HttpServletRequest request) {
+    public String getProfile(HttpServletRequest request, Model model) {
+        User user = userService.getUserWithToken((String)request.getAttribute("token"));
+        model.addAttribute("username", user.username);
+        model.addAttribute("email", user.email);
+        model.addAttribute("password", "**********");
+        if (user!=null) {
+            return "profile";
+        }
+        else {
+            return "signin";
+        }
+    }
+
+    @PostMapping("/profile")
+    public String PostSignIn(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response, HttpServletRequest request) {
         User user = userService.getUserWithToken((String)request.getAttribute("token"));
         if (user!=null) {
+            System.out.println(username + " | " + email + " | " + password);
+            //userService.updateUserProfile(user.id, username, password, email);
             return "profile";
         }
         else {
