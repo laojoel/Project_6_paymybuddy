@@ -6,16 +6,16 @@ public class Constant {
     //
     public static final byte USERNAME_MAX_LEN = 16;
     public static final byte USERNAME_MIN_LEN = 3;
-    public static final byte PASSWORD_MAX_LEN = 22;
-    public static final byte PASSWORD_MIN_LEN = 3;
+    public static final byte PASSWORD_HASH_LEN = 64; // SHA-256 bits = 32 bytes x Hex = 64 chars
     public static final byte MAIL_MAX_LEN = 23;
     public static final byte MAIL_MIN_LEN = 3;
     //
     public static final byte USER_CREATION_SUCCESS = 0;
     public static final byte USER_CREATION_WRONG_INPUTS = 1;
     public static final byte USER_CREATION_ALREADY_EXIST = 2;
-    public static final byte USER_CREATION_TECHNICAL_ISSUE = 3;
     //
-    public static final byte USER_AUTHENTICATION_SUCCESS = 0;
-    public static final byte USER_AUTHENTICATION_FAIL = 1;
+    public static final byte ADD_BENEFICIARY_SUCCESS = 0;
+    public static final byte ADD_BENEFICIARY_UNKNOWN_EMAIL = 1;
+    //
+
 }

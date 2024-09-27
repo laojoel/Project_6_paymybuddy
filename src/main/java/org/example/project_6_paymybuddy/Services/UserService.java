@@ -18,8 +18,9 @@ public class UserService {
     SecureRandom secureRandom = new SecureRandom();
 
     public byte createNewUser(String username, String email, String password) {
+        System.out.println(username + " | " + email + " | " + password + " | " + password.length());
         if (username.length() < USERNAME_MIN_LEN || username.length() > USERNAME_MAX_LEN || !username.chars().allMatch(Character::isAlphabetic)) {return USER_CREATION_WRONG_INPUTS;}
-        else if (password.length() < PASSWORD_MIN_LEN || password.length() > PASSWORD_MAX_LEN) {return USER_CREATION_WRONG_INPUTS;}
+        else if (password.length() != PASSWORD_HASH_LEN) {return USER_CREATION_WRONG_INPUTS;}
         else if (email.length() < MAIL_MIN_LEN || email.length() > MAIL_MAX_LEN || !email.contains("@")) {return USER_CREATION_WRONG_INPUTS;}
         else if (userProxy.findUserByMailOrUsername(email,username) != null) {return USER_CREATION_ALREADY_EXIST;}
         else {userProxy.createUser(username,email,password); return  USER_CREATION_SUCCESS;}
@@ -52,5 +53,14 @@ public class UserService {
 
     public void updateUserProfile(int id, String username, String email, String password) {
         userProxy.updateUserProfile(id, username,email,password);
+    }
+
+
+    public byte addBeneficiary(String email) {
+        User user = userProxy.findUserWithEmail(email);
+        if (user==null) {return ADD_BENEFICIARY_UNKNOWN_EMAIL;}
+        else {
+            return 0; //to do
+        }
     }
 }
