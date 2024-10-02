@@ -63,6 +63,17 @@
       padding: 10px;
       display: flex;
     }
+    .msg {
+      margin: 3px auto;
+      padding: 20px;
+      display: block;
+      border:1px solid #ffffff;
+      background-color:#ffffff;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      height: 16px;
+    }
   </style>
 </head>
 <body>
@@ -72,8 +83,9 @@
     <div class="tittle">Chercher une relation</div>
     <div class="search-bar">
       <input class="textfield" type="text" id="beneficiary" placeholder="Saisir une adresse mail">
-      <button class="solid-button" id="Ajouter">Ajouter</button>
+      <button class="solid-button" id="add">Ajouter</button>
     </div>
+    <div class="msg" th:text="${msg}" th:style="'color:' + ${color}"></div>
   </div>
 
 </div>
@@ -85,5 +97,21 @@
               document.getElementById('navbar').innerHTML = data;
             })
   </script>
+<script>
+  document.getElementById('add').addEventListener('click', async function() {
+    const url = 'http://localhost:8080/beneficiary';
+    const packet = new URLSearchParams();
+    packet.append('email', document.getElementById('beneficiary').value);
+    fetch(url, {method: 'POST', body: packet})
+            .then(response => response.text())
+            .then(html => {
+              document.open();
+              document.writeln(html);
+              document.close();
+            })
+            .catch(error => {
+            });
+  });
+</script>
 </body>
 </html>

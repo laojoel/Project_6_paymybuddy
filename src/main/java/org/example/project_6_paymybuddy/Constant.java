@@ -16,6 +16,7 @@ public class Constant {
     //
     public static final byte ADD_BENEFICIARY_SUCCESS = 0;
     public static final byte ADD_BENEFICIARY_UNKNOWN_EMAIL = 1;
+    public static final byte ADD_BENEFICIARY_DUPLICATED = 2;
     //
 
 }

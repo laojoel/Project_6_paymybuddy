@@ -2,6 +2,7 @@ package org.example.project_6_paymybuddy.Controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.project_6_paymybuddy.Models.User;
+import org.example.project_6_paymybuddy.Services.BeneficiaryService;
 import org.example.project_6_paymybuddy.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,32 +21,26 @@ public class BeneficiaryController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private BeneficiaryService beneficiaryService;
 
     @GetMapping("/beneficiary")
-    public String getBeneficiary(Model model, HttpServletRequest request) {
-
-        User user = userService.getUserWithToken((String)request.getAttribute("token"));
-        if (user!=null) {
-            return "beneficiary";
-        }
-        else {
-            return "signin";
-        }
+    public String getBeneficiary() {
+        return "beneficiary";
     }
 
     @PostMapping("/beneficiary")
     public String PostSignUp(@RequestParam("email") String email, Model model, HttpServletRequest request) {
-        String page = "", message = "", color = "";
-        byte addBeneficiary = userService.addBeneficiary(email);
-        /*
-        System.out.println("Code = " + userCreationCode);
-        if (userCreationCode == USER_CREATION_WRONG_INPUTS) {page="signup"; message = "Les informations saisie sont érroné"; color = "#cc3823";}
-        else if (userCreationCode == USER_CREATION_ALREADY_EXIST) {page="signup"; message = "Utilisateur déjà existant"; color = "#cc3823";}
-        else if (userCreationCode == USER_CREATION_SUCCESS) {page="signin"; message = "Compte crée avec succès"; color = "#339933";}
+        User user =(User)request.getAttribute("user");
+        String message = "", color = "";
+        byte addBeneficiaryCode = beneficiaryService.addBeneficiary(user.getId() ,email);
+        System.out.println("addBeneficiary Result = " + addBeneficiaryCode);
+
+        if (addBeneficiaryCode == ADD_BENEFICIARY_DUPLICATED) {message = "Bénéficiaire déjà existant"; color = "#cc3823";}
+        else if (addBeneficiaryCode == ADD_BENEFICIARY_UNKNOWN_EMAIL) {message = "Bénéficiaire inéxistant"; color = "#cc3823";}
+        else if (addBeneficiaryCode == ADD_BENEFICIARY_SUCCESS) {message = "Bénéficiaire "+ email +" ajouté avec succès"; color = "#339933";}
         model.addAttribute("msg", message);
         model.addAttribute("color", color);
-        return page;
-        */
-        return "";
+        return "beneficiary";
     }
 }

@@ -126,10 +126,10 @@
   <div class="content-top">
     <select class="dropdown">
       <option value="" disabled selected>Sélectionner une relation</option>
-      <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
+      <option th:each="users : ${users}" th:value="${users.id}" th:text="${users.username}"></option>
     </select>
     <input class="textfield-label" type="text" id="beneficiary" placeholder="Description">
-    <input class="textfield-amount" id="textfield-amount" type="text" id="amount" placeholder="0 €">
+    <input class="textfield-amount" id="textfield-amount" type="text" placeholder="0 €">
     <div class="arrow-container">
       <button class="arrow-button" onclick="amountScroller(5)">
         <svg class="arrow-svg" fill="#currentColor" height="12px" width="12px" viewBox="0 0 512.001 512.001" xml:space="preserve">

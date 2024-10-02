@@ -19,12 +19,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    //public AuthentController(UserService userService) {this.userService = userService;}
 
     @GetMapping("/signin")
     public String getSignIn(Model model) {
         model.addAttribute("msg", " ");
         model.addAttribute("color", "#339933");
+        System.out.println("FLUX OK");
         return "signin";
     }
 
@@ -32,7 +32,6 @@ public class UserController {
     public String PostSignIn(@RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response) {
         User user = userService.authenticateUser(email, password);
         if (user == null) {
-            System.out.println("fail");
             model.addAttribute("msg", "mail et/ou mot de passe erroné(s)");
             model.addAttribute("color", "#cc3823");
             return "signin";
@@ -66,9 +65,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String getLogout(Model model, HttpServletRequest request) {
-        User user = userService.getUserWithToken((String)request.getAttribute("token"));
-        if(user!=null){userService.revokeToken(user.id);}
-
+        userService.revokeToken(((User)request.getAttribute("user")).id);
         model.addAttribute("msg", "Vous avez été déconnecté avec succès");
         model.addAttribute("color", "#339933");
         return "signin";
@@ -81,29 +78,17 @@ public class UserController {
 
     @GetMapping("/profile")
     public String getProfile(HttpServletRequest request, Model model) {
-        User user = userService.getUserWithToken((String)request.getAttribute("token"));
+        User user = (User)request.getAttribute("user");
         model.addAttribute("username", user.username);
         model.addAttribute("email", user.email);
         model.addAttribute("password", "**********");
-        if (user!=null) {
-            return "profile";
-        }
-        else {
-            return "signin";
-        }
+        return "profile";
     }
 
     @PostMapping("/profile")
     public String PostSignIn(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response, HttpServletRequest request) {
-        User user = userService.getUserWithToken((String)request.getAttribute("token"));
-        if (user!=null) {
-            System.out.println(username + " | " + email + " | " + password);
-            //userService.updateUserProfile(user.id, username, password, email);
-            return "profile";
-        }
-        else {
-            return "signin";
-        }
+        User user =(User)request.getAttribute("user");
+        return "profile";
     }
 
 

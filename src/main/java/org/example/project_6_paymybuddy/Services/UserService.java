@@ -54,13 +54,4 @@ public class UserService {
     public void updateUserProfile(int id, String username, String email, String password) {
         userProxy.updateUserProfile(id, username,email,password);
     }
-
-
-    public byte addBeneficiary(String email) {
-        User user = userProxy.findUserWithEmail(email);
-        if (user==null) {return ADD_BENEFICIARY_UNKNOWN_EMAIL;}
-        else {
-            return 0; //to do
-        }
-    }
 }
