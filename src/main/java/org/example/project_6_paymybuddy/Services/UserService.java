@@ -51,7 +51,12 @@ public class UserService {
         else {return userProxy.findUserWithToken(token);}
     }
 
+    public void addCredit(int userId, int amount) {
+        userProxy.setCredit(userId, amount);
+    }
+
     public void updateUserProfile(int id, String username, String email, String password) {
         userProxy.updateUserProfile(id, username,email,password);
     }
+
 }

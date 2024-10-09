@@ -23,6 +23,12 @@ public interface UserProxy extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u WHERE u.email = :email")
     User findUserWithEmail(@Param("email") String email);
 
+    @Query("SELECT u FROM User u WHERE u.id = :id")
+    User findUserWithId(@Param("id") int id);
+
+    @Query("SELECT u.username FROM User u WHERE u.id = :id")
+    String findUsernameWithId(@Param("id") int id);
+
     @Query("SELECT u FROM User u WHERE u.id IN :ids")
     List<User> findUsersFromIdArray(@Param("ids") List<Integer> ids);
 
@@ -43,4 +49,14 @@ public interface UserProxy extends JpaRepository<User,Long> {
     @Modifying
     @Query(value = "UPDATE User u SET u.username = :username, u.email = :email, u.password = :password WHERE u.id = :id")
     void updateUserProfile(int id, String username, String email, String password);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE User u SET u.balance = :balance WHERE u.id = :id")
+    void updateBalance(int id, float balance);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE User u SET u.balance = u.balance + :amount WHERE u.id = :id")
+    void setCredit(int id, float amount);
 }

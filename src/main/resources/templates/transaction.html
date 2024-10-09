@@ -106,6 +106,7 @@
 
     .table {
       width: 845px;
+      border-collapse: separate;
       border: 1px solid #9b9b9b;
       border-radius: 6px;
       font-family: Arial, sans-serif;
@@ -115,8 +116,30 @@
     .table-tittle {
       transform: translate(12px, 3px);
       font-weight: bold;
+      height: 38px;
     }
-
+    .table-row {
+      padding-left: 12px;
+      font-weight: normal;
+      height: 31px;
+      border-top:1px solid #cecece;
+    }
+    .table-row:hover {
+      background-color: #9cdcff;
+    }
+    .msg {
+      flex: 1;
+      width: 820px;
+      margin: 8px auto;
+      padding: 12px;
+      display: block;
+      border:1px solid #ffffff;
+      color: black;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      height: 16px;
+    }
   </style>
 </head>
 <body>
@@ -124,12 +147,12 @@
 
 <div class="content">
   <div class="content-top">
-    <select class="dropdown">
+    <select class="dropdown" id="dropdown">
       <option value="" disabled selected>Sélectionner une relation</option>
       <option th:each="users : ${users}" th:value="${users.id}" th:text="${users.username}"></option>
     </select>
-    <input class="textfield-label" type="text" id="beneficiary" placeholder="Description">
-    <input class="textfield-amount" id="textfield-amount" type="text" placeholder="0 €">
+    <input class="textfield-label" type="text" id="textfield-label" placeholder="Description">
+    <input class="textfield-amount" id="textfield-amount" type="text" name="0 €" placeholder="0 €">
     <div class="arrow-container">
       <button class="arrow-button" onclick="amountScroller(5)">
         <svg class="arrow-svg" fill="#currentColor" height="12px" width="12px" viewBox="0 0 512.001 512.001" xml:space="preserve">
@@ -143,8 +166,9 @@
       </button>
     </div>
     </input>
-    <button class="solid-button" id="modify">Payer</button>
+    <button class="solid-button" id="pay">Payer</button>
   </div>
+  <div class="msg" th:text="${msg}" th:style="'background-color:' + ${color}"></div>
   <div class="content-bot">
     <table class="table">
       <thead class="table-tittle">
@@ -155,10 +179,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="obj : ${objects}">
-        <td th:text="${obj.property1}"></td>
-        <td th:text="${obj.property2}"></td>
-        <td th:text="${obj.property3}"></td>
+      <tr class="table-row" th:each="transaction : ${transaction}">
+        <td class="table-row" th:text="${transaction.receiverUsername}"></td>
+        <td class="table-row" th:text="${transaction.label}"></td>
+        <td class="table-row" th:text="${transaction.amountString}"></td>
       </tr>
       </tbody>
     </table>
@@ -166,11 +190,30 @@
 </div>
 
   <script>
-    fetch('http://localhost:8080/navbar')
+    fetch('http://localhost:8080/navbar/transaction')
             .then(response => response.text())
             .then(data => {
               document.getElementById('navbar').innerHTML = data;
+              initializeNavbarScripts();
             })
+    function initializeNavbarScripts() {
+      document.getElementById('balance').addEventListener('click', async function() {
+        let overlay = document.getElementById("overlay"); overlay.style.display = overlay.style.display === "block" ? "none" : "block";
+      });
+
+      document.getElementById('credit').addEventListener('click', async function() {
+        const url = 'http://localhost:8080/credit';
+        const packet = new URLSearchParams();
+        packet.append('amount', document.getElementById('amount').value);
+        fetch(url, {method: 'POST', body: packet})
+                .then(response => {
+                  location.reload();
+                })
+                .catch(error => {
+                });
+      });
+    }
+
     function amountScroller(delta) {
       const numberField = document.getElementById('textfield-amount');
       let numericValue = numberField.value.replace(/[^0-9]/g, '');
@@ -180,14 +223,31 @@
       numberField.value = calc + " €";
     }
 
-    let previousValue = '';
     document.getElementById('textfield-amount').addEventListener('input', function() {
-      if (this.value.length > previousValue.length) {
+      if (this.value.length > this.name.length) {
         let numericValue = this.value.replace(/[^0-9]/g, '');
         if (numericValue.length === 0) {numericValue = "0";}
         this.value = numericValue + " €"
       }
-      previousValue = this.value;
+      this.name = this.value;
+    });
+
+    document.getElementById('pay').addEventListener('click', async function() {
+      const url = 'http://localhost:8080/transaction';
+      const packet = new URLSearchParams();
+      let filtratedAmount =document.getElementById('textfield-amount').value.replace(/[^0-9]/g, '');
+      packet.append('relation', document.getElementById('dropdown').value);
+      packet.append('label', document.getElementById('textfield-label').value);
+      packet.append('amount', filtratedAmount);
+      fetch(url, {method: 'POST', body: packet})
+              .then(response => response.text())
+              .then(html => {
+                document.open();
+                document.writeln(html);
+                document.close();
+              })
+              .catch(error => {
+              });
     });
   </script>
 </body>

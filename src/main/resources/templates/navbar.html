@@ -31,6 +31,7 @@
       transition: background-color 0.1s ease;
       color: #000000;
       padding: 12px;
+      border-radius: 6px;
     }
     .nav-button:hover {
       color: #2a7bfe;
@@ -41,18 +42,53 @@
       font-weight: bold;
       font-size: 16px;
     }
+    .balance {
+      height: 30px;
+      margin-left: 38px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      color: #49576e;
+      background-color: white;
+      border-radius:6px;
+      border:none;
+      transition: background-color 0.1s ease;
+    }
+    .balance:hover {
+      background-color: #cae6ff;
+      color: #364254;
+      cursor: pointer;
+    }
+    #selected {
+      background-color: #dbf1ff;
+    }
+    .overlay {
+      height: 150px;
+      width: 280px;
+      background-color: #9b9b9b;
+      position: absolute;
+      display: none;
+    }
+    .page {
+      background-color: white;
+    }
   </style>
 </head>
 <body>
 <nav th:fragment="navbar" class="navbar">
   <div class="nav-left">
     <span class="nav-logo">Pay My Buddy</span>
+    <button class="balance" id="balance" th:text="${balance}"></button>
+    <div class="overlay" id="overlay">
+      <input class="overlay-textfield" id="amount" placeholder="0">
+      <button class="overlay-button" id="credit">Créditer le compte</button>
+    </div>
   </div>
   <div class="nav-right">
-    <form th:action="@{/transaction}" method="get"><button class="nav-button">Transférer</button></form>
-    <form th:action="@{/profile}" method="get"><button class="nav-button">Profil</button></form>
-    <form th:action="@{/beneficiary}" method="get"><button class="nav-button">Ajouter une relation</button></form>
-    <form th:action="@{/logout}" method="get"><button class="nav-button">Se déconnecter</button></form>
+    <form th:action="@{/transaction}" method="get"><input type="hidden" name="page" value="transaction"><button class="nav-button" th:id="${ page=='transaction' ? 'selected' : 'other'}">Transférer</button></form>
+    <form th:action="@{/profile}" method="get"><input type="hidden" name="page" value="profile"><button class="nav-button" th:id="${ page=='profile' ? 'selected' : 'other'}">Profil</button></form>
+    <form th:action="@{/beneficiary}" method="get"><input type="hidden" name="page" value="beneficiary"><button class="nav-button" th:id="${ page=='beneficiary' ? 'selected' : 'other'}">Ajouter une relation</button></form>
+    <form th:action="@{/logout}" method="get"><input type="hidden" name="page" value="x"><button class="nav-button" th:id="${ page=='logout' ? 'selected' : 'other'}">Se déconnecter</button></form>
   </div>
 </nav>
 </body>

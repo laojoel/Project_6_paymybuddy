@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +25,6 @@ public class UserController {
     public String getSignIn(Model model) {
         model.addAttribute("msg", " ");
         model.addAttribute("color", "#339933");
-        System.out.println("FLUX OK");
         return "signin";
     }
 
@@ -71,11 +71,6 @@ public class UserController {
         return "signin";
     }
 
-    @GetMapping("/navbar")
-    public String getNavBar() {
-        return "navbar";
-    }
-
     @GetMapping("/profile")
     public String getProfile(HttpServletRequest request, Model model) {
         User user = (User)request.getAttribute("user");
@@ -87,9 +82,22 @@ public class UserController {
 
     @PostMapping("/profile")
     public String PostSignIn(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response, HttpServletRequest request) {
-        User user =(User)request.getAttribute("user");
+        User user = (User)request.getAttribute("user");
+        userService.updateUserProfile(user.id, username, email, password);
         return "profile";
     }
 
+    @GetMapping("/navbar/{page}")
+    public String getNavBar(Model model, HttpServletRequest request, @PathVariable("page") String page) {
+        User user = (User)request.getAttribute("user");
+        model.addAttribute("balance", "Solde: " + (int)user.balance + " €");
+        model.addAttribute("page", page);
+        return "navbar";
+    }
 
+    @PostMapping("/credit")
+    public void PostCredit(@RequestParam("amount") String amount, HttpServletRequest request) {
+        User user=(User)request.getAttribute("user");
+        userService.addCredit(user.id, Integer.parseInt(amount));
+    }
 }

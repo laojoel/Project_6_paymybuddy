@@ -91,27 +91,38 @@
 </div>
 
   <script>
-    fetch('http://localhost:8080/navbar')
+    fetch('http://localhost:8080/navbar/beneficiary')
             .then(response => response.text())
             .then(data => {
               document.getElementById('navbar').innerHTML = data;
+              initializeNavbarScripts();
             })
-  </script>
-<script>
-  document.getElementById('add').addEventListener('click', async function() {
-    const url = 'http://localhost:8080/beneficiary';
-    const packet = new URLSearchParams();
-    packet.append('email', document.getElementById('beneficiary').value);
-    fetch(url, {method: 'POST', body: packet})
-            .then(response => response.text())
-            .then(html => {
-              document.open();
-              document.writeln(html);
-              document.close();
-            })
-            .catch(error => {
-            });
-  });
+    function initializeNavbarScripts() {
+      document.getElementById('balance').addEventListener('click', async function() {
+        let overlay = document.getElementById("overlay");
+        overlay.style.display = overlay.style.display === "block" ? "none" : "block";
+      });
+    }
+    window.onclick = function(event) {
+      if (!event.target.matches('.creditbtn')) {
+
+      }
+    }
+
+    document.getElementById('add').addEventListener('click', async function() {
+      const url = 'http://localhost:8080/beneficiary';
+      const packet = new URLSearchParams();
+      packet.append('email', document.getElementById('beneficiary').value);
+      fetch(url, {method: 'POST', body: packet})
+              .then(response => response.text())
+              .then(html => {
+                document.open();
+                document.writeln(html);
+                document.close();
+              })
+              .catch(error => {
+              });
+    });
 </script>
 </body>
 </html>

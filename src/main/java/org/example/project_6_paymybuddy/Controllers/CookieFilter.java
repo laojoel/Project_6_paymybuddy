@@ -21,6 +21,7 @@ public class CookieFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("COOKIE_path = " + request.getRequestURI());
         if (request.getRequestURI().equals("/signin") || request.getRequestURI().equals("/signup")) {
             filterChain.doFilter(request, response);
         }

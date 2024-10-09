@@ -98,8 +98,8 @@
         <input class="textfield" type="text" id="email" th:value="${email}">
     </div>
     <div class="row">
-      <label class="label" for="password">Mot de passe</label>
-        <input class="textfield" type="password" id="pass" th:value="${password}" onchange="pass_change()">
+      <label class="label" for="pass">Mot de passe</label>
+      <input class="textfield" type="password" id="pass" th:value="${password}" onchange="pass_change()">
     </div>
     <button class="solid-button" id="modify">Modifier</button>
   </div>
@@ -112,11 +112,18 @@
       didPassChanged = true;
       alert("Sig")
     }
-    fetch('http://localhost:8080/navbar')
+    fetch('http://localhost:8080/navbar/profile')
             .then(response => response.text())
             .then(data => {
               document.getElementById('navbar').innerHTML = data;
+              initializeNavbarScripts();
             })
+    function initializeNavbarScripts() {
+      document.getElementById('balance').addEventListener('click', async function() {
+        let overlay = document.getElementById("overlay");
+        overlay.style.display = overlay.style.display === "block" ? "none" : "block";
+      });
+    }
 
     document.getElementById('modify').addEventListener('click', async function() {
       const url = 'http://localhost:8080/profile';

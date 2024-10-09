@@ -29,7 +29,7 @@ public class BeneficiaryService {
         }
     }
 
-    public List<User> getBeneficiariesForUserId(int holderId) {
+    public List<User> getUsersBeneficiariesForUserId(int holderId) {
         List<Beneficiary> beneficiaries = beneficiaryProxy.findAllBeneficiariesForUserId(holderId);
 
         List<Integer> userIds = new ArrayList<>();
