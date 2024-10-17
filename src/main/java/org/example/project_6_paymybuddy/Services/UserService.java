@@ -18,7 +18,6 @@ public class UserService {
     SecureRandom secureRandom = new SecureRandom();
 
     public byte createNewUser(String username, String email, String password) {
-        System.out.println(username + " | " + email + " | " + password + " | " + password.length());
         if (username.length() < USERNAME_MIN_LEN || username.length() > USERNAME_MAX_LEN || !username.chars().allMatch(Character::isAlphabetic)) {return USER_CREATION_WRONG_INPUTS;}
         else if (password.length() != PASSWORD_HASH_LEN) {return USER_CREATION_WRONG_INPUTS;}
         else if (email.length() < MAIL_MIN_LEN || email.length() > MAIL_MAX_LEN || !email.contains("@")) {return USER_CREATION_WRONG_INPUTS;}

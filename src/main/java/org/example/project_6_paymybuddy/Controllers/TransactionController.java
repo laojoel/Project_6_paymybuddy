@@ -26,8 +26,6 @@ public class TransactionController {
     private TransactionService transactionService;
     @Autowired
     private BeneficiaryService beneficiaryService;
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/transaction")
     public String getTransaction(Model model, HttpServletRequest request) {
