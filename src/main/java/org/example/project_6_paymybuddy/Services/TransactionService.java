@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import static org.example.project_6_paymybuddy.Constant.*;
+import static org.example.project_6_paymybuddy.ApplicationStarter.logger;
 
 @Service
 public class TransactionService {
@@ -25,12 +25,11 @@ public class TransactionService {
 
     @Transactional
     public byte proceedTransaction(User sender, String receiverStr, String amountStr, String label) {
-        // Check if String are convertible to Int
         Integer receiverId = StringToInteger(receiverStr); if (receiverId==null) {return TRANSACTION_FAIL_RECEIVER;}
         Integer amount = StringToInteger(amountStr); if (amount==null) {return TRANSACTION_FAIL_AMOUNT;}
 
         User receiver = userProxy.findUserWithId(receiverId);
-        if (receiver==null) {return TRANSACTION_FAIL_RECEIVER;}
+        if (receiver==null) {logger.error("Transaction Fail: Receiver id " + receiverId + " not found"); return TRANSACTION_FAIL_RECEIVER;}
         else if (amount < TRANSACTION_MIN_AMOUNT || amount > TRANSACTION_MAX_AMOUNT) {return TRANSACTION_FAIL_AMOUNT;}
         else if (label.length() < TRANSACTION_LABEL_MIN_LEN || label.length() > TRANSACTION_LABEL_MAX_LEN) {return TRANSACTION_FAIL_LABEL;}
         else if (sender.balance - amount < 0) {return TRANSACTION_FAIL_BALANCE;}

@@ -9,6 +9,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 import static org.example.project_6_paymybuddy.Constant.*;
+import static org.example.project_6_paymybuddy.ApplicationStarter.logger;
 
 @Service
 public class UserService {
@@ -22,7 +23,7 @@ public class UserService {
         else if (password.length() != PASSWORD_HASH_LEN) {return USER_CREATION_WRONG_INPUTS;}
         else if (email.length() < MAIL_MIN_LEN || email.length() > MAIL_MAX_LEN || !email.contains("@")) {return USER_CREATION_WRONG_INPUTS;}
         else if (userProxy.findUserByMailOrUsername(email,username) != null) {return USER_CREATION_ALREADY_EXIST;}
-        else {userProxy.createUser(username,email,password); return  USER_CREATION_SUCCESS;}
+        else {userProxy.createUser(username,email,password); logger.info("# New user created: " + username); return  USER_CREATION_SUCCESS;}
     }
 
     public User authenticateUser(String email, String password) {
@@ -52,6 +53,7 @@ public class UserService {
 
     public void addCredit(int userId, int amount) {
         userProxy.setCredit(userId, amount);
+        logger.info("# UserId" + userId + "Credited " + amount + " € to his/her account");
     }
 
     public void updateUserProfile(int id, String username, String email, String password) {

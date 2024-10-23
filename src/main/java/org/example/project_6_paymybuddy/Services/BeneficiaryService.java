@@ -6,11 +6,10 @@ import org.example.project_6_paymybuddy.Proxies.BeneficiaryProxy;
 import org.example.project_6_paymybuddy.Proxies.UserProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.example.project_6_paymybuddy.Constant.*;
+import static org.example.project_6_paymybuddy.ApplicationStarter.logger;
 
 @Service
 public class BeneficiaryService {
@@ -25,7 +24,10 @@ public class BeneficiaryService {
         if (relationUser == null) {return ADD_BENEFICIARY_UNKNOWN_EMAIL;}
         else {
             if (beneficiaryProxy.findBeneficiaryByIds(holder,relationUser.getId())!=null) {return ADD_BENEFICIARY_DUPLICATED;}
-            else {beneficiaryProxy.addBeneficiary(holder,relationUser.getId()); return ADD_BENEFICIARY_SUCCESS;}
+            else {
+                logger.info("user id " + holder + " added user id " + relationUser.id + " as beneficiary");
+                beneficiaryProxy.addBeneficiary(holder,relationUser.getId()); return ADD_BENEFICIARY_SUCCESS;
+            }
         }
     }
 

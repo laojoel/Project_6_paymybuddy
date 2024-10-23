@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.project_6_paymybuddy.Models.User;
 import org.example.project_6_paymybuddy.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,39 +26,39 @@ public class UserController {
     public String getSignIn(Model model) {
         model.addAttribute("msg", " ");
         model.addAttribute("color", "#339933");
-        return "signin";
+        return "signinView";
     }
 
     @PostMapping("/signin")
-    public String PostSignIn(@RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response) {
+    public String postSignIn(@RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response) {
         User user = userService.authenticateUser(email, password);
         if (user == null) {
             model.addAttribute("msg", "mail et/ou mot de passe erroné(s)");
             model.addAttribute("color", "#cc3823");
-            return "signin";
+            return "signinView";
         }
         else {
             Cookie cookie = new Cookie("token", user.token);
             response.addCookie(cookie);
             model.addAttribute("id", user.id);
             model.addAttribute("token", user.token);
-            return "transaction";
+            return "transactionView";
         }
     }
 
     @GetMapping("/signup")
     public String getSignUp() {
-        return "signup";
+        return "signupView";
     }
 
     @PostMapping("/signup")
-    public String PostSignUp(@RequestParam("username") String userName, @RequestParam("email") String email, @RequestParam("password") String password, Model model) {
+    public String postSignUp(@RequestParam("username") String userName, @RequestParam("email") String email, @RequestParam("password") String password, Model model) {
         String page = "", message = "", color = "";
         byte userCreationCode = userService.createNewUser(userName, email, password);
         System.out.println("Code = " + userCreationCode);
-        if (userCreationCode == USER_CREATION_WRONG_INPUTS) {page="signup"; message = "Les informations saisie sont érroné"; color = "#cc3823";}
-        else if (userCreationCode == USER_CREATION_ALREADY_EXIST) {page="signup"; message = "Utilisateur déjà existant"; color = "#cc3823";}
-        else if (userCreationCode == USER_CREATION_SUCCESS) {page="signin"; message = "Compte crée avec succès"; color = "#339933";}
+        if (userCreationCode == USER_CREATION_WRONG_INPUTS) {page="signupView"; message = "Les informations saisie sont érroné"; color = "#cc3823";}
+        else if (userCreationCode == USER_CREATION_ALREADY_EXIST) {page="signupView"; message = "Utilisateur déjà existant"; color = "#cc3823";}
+        else if (userCreationCode == USER_CREATION_SUCCESS) {page="signinView"; message = "Compte crée avec succès"; color = "#339933";}
         model.addAttribute("msg", message);
         model.addAttribute("color", color);
         return page;
@@ -68,7 +69,7 @@ public class UserController {
         userService.revokeToken(((User)request.getAttribute("user")).id);
         model.addAttribute("msg", "Vous avez été déconnecté avec succès");
         model.addAttribute("color", "#339933");
-        return "signin";
+        return "signinView";
     }
 
     @GetMapping("/profile")
@@ -77,14 +78,14 @@ public class UserController {
         model.addAttribute("username", user.username);
         model.addAttribute("email", user.email);
         model.addAttribute("password", "**********");
-        return "profile";
+        return "profileView";
     }
 
     @PostMapping("/profile")
-    public String PostSignIn(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpServletResponse response, HttpServletRequest request) {
+    public String postProfile(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,HttpServletRequest request) {
         User user = (User)request.getAttribute("user");
         userService.updateUserProfile(user.id, username, email, password);
-        return "profile";
+        return "profileView";
     }
 
     @GetMapping("/navbar/{page}")
@@ -92,12 +93,13 @@ public class UserController {
         User user = (User)request.getAttribute("user");
         model.addAttribute("balance", "Solde: " + (int)user.balance + " €");
         model.addAttribute("page", page);
-        return "navbar";
+        return "navbarView";
     }
 
     @PostMapping("/credit")
-    public void PostCredit(@RequestParam("amount") String amount, HttpServletRequest request) {
+    public ResponseEntity<Object> postCredit(@RequestParam("amount") String amount, HttpServletRequest request) {
         User user=(User)request.getAttribute("user");
         userService.addCredit(user.id, Integer.parseInt(amount));
+        return ResponseEntity.ok().build();
     }
 }
