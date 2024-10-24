@@ -1,8 +1,12 @@
 OpenClassRoom | Project 6 | Pay my buddy | Joel LAO
 
 Model Diagram
-![Model](https://github.com/user-attachments/assets/abcffdfa-158c-4642-9972-275d9c116cd6)
+![image](https://github.com/user-attachments/assets/8f28dec9-598e-40fb-8749-415888a97b1a)
+
+
+
 
 
 Database Diagram
-![image](https://github.com/user-attachments/assets/a580b8ac-2fad-460a-9804-196be05f6b35)
+![image](https://github.com/user-attachments/assets/39f6380a-2f3e-4d07-b5b3-c5776d985496)
+
