@@ -140,12 +140,12 @@ public class UserControllerTest {
 
     @Test
     void getNavbarTest() throws Exception {
-        User user = new User(); user.setBalance(256);
+        User user = new User(); user.setBalance(256.0f);
         mockMvc.perform(get("/navbar/transaction")
                         .requestAttr("user", user))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("balance"))
-                .andExpect(model().attribute("balance", "Solde: 256 €"))
+                .andExpect(model().attribute("balance", "Solde: 256.0 €"))
                 .andExpect(view().name("navbarView"));
     }
 

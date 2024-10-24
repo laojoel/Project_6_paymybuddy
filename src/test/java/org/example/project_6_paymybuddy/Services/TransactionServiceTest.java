@@ -151,4 +151,24 @@ public class TransactionServiceTest {
     void StringToFloatTwoDecimals_Fail() {
         assertThat(transactionService.StringToInteger("53_51")).isNull();
     }
+
+    @Test
+    void floatToStringAmountCurrencyTest_noDecimal() {
+        assertThat(transactionService.floatToStringAmountCurrency(12.0f)).isEqualTo("12 €");
+    }
+
+    @Test
+    void floatToStringAmountCurrencyTest_oneDecimal() {
+        assertThat(transactionService.floatToStringAmountCurrency(12.3f)).isEqualTo("12.30 €");
+    }
+
+    @Test
+    void floatToStringAmountCurrencyTest_twoDecimal() {
+        assertThat(transactionService.floatToStringAmountCurrency(12.36f)).isEqualTo("12.36 €");
+    }
+
+    @Test
+    void floatToStringAmountCurrencyTest_treeDecimalAndUp() {
+        assertThat(transactionService.floatToStringAmountCurrency(12.36486f)).isEqualTo("12.36 €");
+    }
 }

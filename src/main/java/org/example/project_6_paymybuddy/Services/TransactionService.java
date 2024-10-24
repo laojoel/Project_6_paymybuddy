@@ -73,10 +73,11 @@ public class TransactionService {
     }
 
     public String floatToStringAmountCurrency(float f) {
-        String s = String.valueOf(f);
-        if (s.endsWith(".0")) {s = s.substring(0, s.length() - 2) + " €";} // no decimal (12.0 -> 12 €)
-        else if(s.indexOf('.') == s.length()-2) {s = s + "0 €";} // 1 decimal (12.3 -> 12.30 €)
-        else {s = s + " €";} // 2 decimals (12.35 -> 12.35 €)
+        String s = String.valueOf(f); int i = s.indexOf('.'), l = s.length();
+        if (s.endsWith(".0")) {s = s.substring(0, l - 2) + " €";} // no decimal (12.0 -> 12 €)
+        else if (i == l-2) {s = s + "0 €";} // 1 decimal (12.3 -> 12.30 €)
+        else if (i == l-3) {s = s + " €";} // 2 decimals (12.35 -> 12.35 €)
+        else {s = s.substring(0, i+3) + " €";} // more than 2 decimals (13.3844646 -> 13.38 €)
         return s;
     }
 }
