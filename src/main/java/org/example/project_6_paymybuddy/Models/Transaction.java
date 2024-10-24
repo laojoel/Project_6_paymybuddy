@@ -11,10 +11,10 @@ import lombok.Setter;
 public class Transaction {
     @Id
     private int id;
-    int sender, receiver;
-    long timestamp;
-    int amount;
-    String label;
+    private int sender, receiver;
+    private long timestamp;
+    private float amount;
+    private String label;
 
     @Transient
     String receiverUsername;

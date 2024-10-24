@@ -38,10 +38,10 @@ public class UserController {
             return "signinView";
         }
         else {
-            Cookie cookie = new Cookie("token", user.token);
+            Cookie cookie = new Cookie("token", user.getToken());
             response.addCookie(cookie);
-            model.addAttribute("id", user.id);
-            model.addAttribute("token", user.token);
+            model.addAttribute("id", user.getId());
+            model.addAttribute("token", user.getToken());
             return "transactionView";
         }
     }
@@ -66,7 +66,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String getLogout(Model model, HttpServletRequest request) {
-        userService.revokeToken(((User)request.getAttribute("user")).id);
+        userService.revokeToken(((User)request.getAttribute("user")).getId());
         model.addAttribute("msg", "Vous avez été déconnecté avec succès");
         model.addAttribute("color", "#339933");
         return "signinView";
@@ -75,16 +75,19 @@ public class UserController {
     @GetMapping("/profile")
     public String getProfile(HttpServletRequest request, Model model) {
         User user = (User)request.getAttribute("user");
-        model.addAttribute("username", user.username);
-        model.addAttribute("email", user.email);
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
         model.addAttribute("password", "**********");
         return "profileView";
     }
 
     @PostMapping("/profile")
-    public String postProfile(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,HttpServletRequest request) {
+    public String postProfile(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password,HttpServletRequest request, Model model) {
         User user = (User)request.getAttribute("user");
-        userService.updateUserProfile(user.id, username, email, password);
+        userService.updateUserProfile(user.getId(), username, email, password);
+        model.addAttribute("username", username);
+        model.addAttribute("email", email);
+        model.addAttribute("password", "**********");
         return "profileView";
     }
 
@@ -99,7 +102,7 @@ public class UserController {
     @PostMapping("/credit")
     public ResponseEntity<Object> postCredit(@RequestParam("amount") String amount, HttpServletRequest request) {
         User user=(User)request.getAttribute("user");
-        userService.addCredit(user.id, Integer.parseInt(amount));
+        userService.addCredit(user.getId(), Integer.parseInt(amount));
         return ResponseEntity.ok().build();
     }
 }

@@ -25,7 +25,7 @@ public class BeneficiaryService {
         else {
             if (beneficiaryProxy.findBeneficiaryByIds(holder,relationUser.getId())!=null) {return ADD_BENEFICIARY_DUPLICATED;}
             else {
-                logger.info("user id " + holder + " added user id " + relationUser.id + " as beneficiary");
+                logger.info("user id " + holder + " added user id " + relationUser.getId() + " as beneficiary");
                 beneficiaryProxy.addBeneficiary(holder,relationUser.getId()); return ADD_BENEFICIARY_SUCCESS;
             }
         }

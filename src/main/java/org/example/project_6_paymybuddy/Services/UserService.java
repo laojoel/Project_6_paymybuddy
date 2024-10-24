@@ -35,8 +35,8 @@ public class UserService {
             byte[] tokenBuffer = new byte[TOKEN_BYTE_SIZE];
             secureRandom.nextBytes(tokenBuffer);
             String token = Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBuffer);
-            userProxy.setToken(user.id, token);
-            user.token = token;
+            userProxy.setToken(user.getId(), token);
+            user.setToken(token);
             return user;
         }
     }
@@ -52,12 +52,13 @@ public class UserService {
     }
 
     public void addCredit(int userId, int amount) {
-        userProxy.setCredit(userId, amount);
+        userProxy.setCredit(userId, (float)amount);
         logger.info("# UserId" + userId + "Credited " + amount + " € to his/her account");
     }
 
     public void updateUserProfile(int id, String username, String email, String password) {
-        userProxy.updateUserProfile(id, username,email,password);
+        if (password.equals("false")){userProxy.updateUserProfileNoPassword(id, username, email);}
+        else {userProxy.updateUserProfile(id, username,email,password);}
     }
 
 }

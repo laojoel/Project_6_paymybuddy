@@ -15,9 +15,9 @@ import java.sql.Array;
 public class User {
 
     @Id
-    public int id;
+    private int id;
     public float balance;
-    public String username, email, password, token;
+    private String username, email, password, token;
 
     public User() {
     }

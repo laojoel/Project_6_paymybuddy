@@ -52,6 +52,11 @@ public interface UserProxy extends JpaRepository<User,Long> {
 
     @Transactional
     @Modifying
+    @Query(value = "UPDATE User u SET u.username = :username, u.email = :email WHERE u.id = :id")
+    void updateUserProfileNoPassword(int id, String username, String email);
+
+    @Transactional
+    @Modifying
     @Query(value = "UPDATE User u SET u.balance = :balance WHERE u.id = :id")
     void updateBalance(int id, float balance);
 

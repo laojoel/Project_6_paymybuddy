@@ -25,24 +25,36 @@ public class TransactionService {
 
     @Transactional
     public byte proceedTransaction(User sender, String receiverStr, String amountStr, String label) {
-        Integer receiverId = StringToInteger(receiverStr); if (receiverId==null) {return TRANSACTION_FAIL_RECEIVER;}
-        Integer amount = StringToInteger(amountStr); if (amount==null) {return TRANSACTION_FAIL_AMOUNT;}
+        Integer receiverId = StringToInteger(receiverStr);
+        if (receiverId==null) {
+            logger.error("Transaction Fail: Receiver id [" + receiverStr + "] cannot be parsed");
+            return TRANSACTION_FAIL_RECEIVER;
+        }
+        Float amount = StringToFloat(amountStr);
+        if (amount==null) {
+            logger.error("Transaction Fail: amount [" + amountStr + "] cannot be parsed");
+            return TRANSACTION_FAIL_AMOUNT;
+        }
 
         User receiver = userProxy.findUserWithId(receiverId);
         if (receiver==null) {logger.error("Transaction Fail: Receiver id " + receiverId + " not found"); return TRANSACTION_FAIL_RECEIVER;}
         else if (amount < TRANSACTION_MIN_AMOUNT || amount > TRANSACTION_MAX_AMOUNT) {return TRANSACTION_FAIL_AMOUNT;}
         else if (label.length() < TRANSACTION_LABEL_MIN_LEN || label.length() > TRANSACTION_LABEL_MAX_LEN) {return TRANSACTION_FAIL_LABEL;}
-        else if (sender.balance - amount < 0) {return TRANSACTION_FAIL_BALANCE;}
+        else if (sender.getBalance() - amount < 0.0f) {return TRANSACTION_FAIL_BALANCE;}
         else {
-            userProxy.updateBalance(sender.id, sender.balance-=amount);
-            userProxy.updateBalance(receiver.id, receiver.balance+=amount);
-            transactionProxy.recordTransaction(sender.id, receiverId, Instant.now().toEpochMilli(), amount ,label);
+            userProxy.updateBalance(sender.getId(), sender.balance-=amount);
+            userProxy.updateBalance(receiver.getId(), receiver.balance+=amount);
+            transactionProxy.recordTransaction(sender.getId(), receiverId, Instant.now().toEpochMilli(), amount ,label);
             return TRANSACTION_SUCCESS;
         }
     }
 
     public Integer StringToInteger(String s) {
         Integer result = null; try {result = Integer.parseInt(s);} catch (NumberFormatException ignored){}
+        return result;
+    }
+    public Float StringToFloat(String s) {
+        Float result = null; try {result = Float.parseFloat(s);} catch (NumberFormatException ignored){}
         return result;
     }
 

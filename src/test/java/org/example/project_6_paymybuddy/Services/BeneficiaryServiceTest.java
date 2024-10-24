@@ -66,8 +66,8 @@ public class BeneficiaryServiceTest {
 
         List<User> result = beneficiaryService.getUsersBeneficiariesForUserId(711);
         assertThat(result).isNotNull();
-        assertThat(result.get(0).username).isEqualTo("Alice");
-        assertThat(result.get(1).username).isEqualTo("John");
+        assertThat(result.get(0).getUsername()).isEqualTo("Alice");
+        assertThat(result.get(1).getUsername()).isEqualTo("John");
     }
 
 }
