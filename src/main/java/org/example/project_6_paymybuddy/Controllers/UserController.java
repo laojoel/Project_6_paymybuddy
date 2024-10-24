@@ -94,7 +94,7 @@ public class UserController {
     @GetMapping("/navbar/{page}")
     public String getNavBar(Model model, HttpServletRequest request, @PathVariable("page") String page) {
         User user = (User)request.getAttribute("user");
-        model.addAttribute("balance", "Solde: " + (int)user.balance + " €");
+        model.addAttribute("balance", "Solde: " + user.balance + " €");
         model.addAttribute("page", page);
         return "navbarView";
     }

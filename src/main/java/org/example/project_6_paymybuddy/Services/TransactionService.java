@@ -30,7 +30,8 @@ public class TransactionService {
             logger.error("Transaction Fail: Receiver id [" + receiverStr + "] cannot be parsed");
             return TRANSACTION_FAIL_RECEIVER;
         }
-        Float amount = StringToFloat(amountStr);
+        Float amount = StringToFloatTwoDecimals(amountStr);
+        System.out.println("AmoutStr = " + amountStr + " | amountNum = " + amount);
         if (amount==null) {
             logger.error("Transaction Fail: amount [" + amountStr + "] cannot be parsed");
             return TRANSACTION_FAIL_AMOUNT;
@@ -53,19 +54,29 @@ public class TransactionService {
         Integer result = null; try {result = Integer.parseInt(s);} catch (NumberFormatException ignored){}
         return result;
     }
-    public Float StringToFloat(String s) {
-        Float result = null; try {result = Float.parseFloat(s);} catch (NumberFormatException ignored){}
+    public Float StringToFloatTwoDecimals(String s) {
+        Float result = null; try {
+            result = Float.parseFloat(s.replace(',', '.'));
+            result = Math.round(result * 100) / 100f;
+        } catch (NumberFormatException ignored){}
         return result;
     }
-
     public List<Transaction> getTransactionSentFromUserID(int senderId) {
         List<Transaction> transactions = transactionProxy.findAllTransactionSentFromUserId(senderId);
         transactions.sort(Comparator.comparing(Transaction::getTimestamp).reversed());
 
         for (Transaction transaction : transactions) {
             transaction.setReceiverUsername(userProxy.findUsernameWithId(transaction.getReceiver()));
-            transaction.setAmountString(transaction.getAmount() + " €");
+            transaction.setAmountString(floatToStringAmountCurrency(transaction.getAmount()));
         }
         return transactions;
+    }
+
+    public String floatToStringAmountCurrency(float f) {
+        String s = String.valueOf(f);
+        if (s.endsWith(".0")) {s = s.substring(0, s.length() - 2) + " €";} // no decimal (12.0 -> 12 €)
+        else if(s.indexOf('.') == s.length()-2) {s = s + "0 €";} // 1 decimal (12.3 -> 12.30 €)
+        else {s = s + " €";} // 2 decimals (12.35 -> 12.35 €)
+        return s;
     }
 }

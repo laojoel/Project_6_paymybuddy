@@ -139,4 +139,16 @@ public class TransactionServiceTest {
     void stringToIntegerTest_Fail() {
         assertThat(transactionService.StringToInteger("ABC123")).isNull();
     }
+
+    // convert and round string to 2 decimals float OK
+    @Test
+    void StringToFloatTwoDecimals_OK() {
+        assertThat(transactionService.StringToFloatTwoDecimals("53.593")).isEqualTo(53.59f);
+    }
+
+    // convert and round string to 2 decimals float Fail
+    @Test
+    void StringToFloatTwoDecimals_Fail() {
+        assertThat(transactionService.StringToInteger("53_51")).isNull();
+    }
 }

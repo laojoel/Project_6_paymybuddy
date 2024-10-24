@@ -216,7 +216,7 @@
 
     function amountScroller(delta) {
       const numberField = document.getElementById('textfield-amount');
-      let numericValue = numberField.value.replace(/[^0-9]/g, '');
+      let numericValue = numberField.value.replace(/[^0-9,.]/g, '');
       if (numericValue.length === 0) {numericValue = "0";}
       let calc = parseInt(numericValue) + delta;
       if (calc < 0) {calc = 0;}
@@ -225,7 +225,7 @@
 
     document.getElementById('textfield-amount').addEventListener('input', function() {
       if (this.value.length > this.name.length) {
-        let numericValue = this.value.replace(/[^0-9]/g, '');
+        let numericValue = this.value.replace(/[^0-9,.]/g, '');
         if (numericValue.length === 0) {numericValue = "0";}
         this.value = numericValue + " €"
       }
@@ -235,7 +235,7 @@
     document.getElementById('pay').addEventListener('click', async function() {
       const url = 'http://localhost:8080/transaction';
       const packet = new URLSearchParams();
-      let filtratedAmount =document.getElementById('textfield-amount').value.replace(/[^0-9]/g, '');
+      let filtratedAmount =document.getElementById('textfield-amount').value.replace(/[^0-9,.]/g, '');
       packet.append('relation', document.getElementById('dropdown').value);
       packet.append('label', document.getElementById('textfield-label').value);
       packet.append('amount', filtratedAmount);

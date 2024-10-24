@@ -92,8 +92,8 @@ public class UserServiceTest {
         when(userProxy.authenticateUser(anyString(), anyString())).thenReturn(new User("johnSmith", "net@mail.com", "f2d81a260dea8a100dd517984e53c56a7523d96942a834b9cdc249bd4e8c7aa9"));
         User result = userService.authenticateUser(anyString(), anyString());
         assertThat(result).isNotNull();
-        assertThat(result.token).isNotNull();
-        assertThat(result.token.length()).isEqualTo(43);
+        assertThat(result.getToken()).isNotNull();
+        assertThat(result.getToken().length()).isEqualTo(43);
     }
 
     // Authentication Failed

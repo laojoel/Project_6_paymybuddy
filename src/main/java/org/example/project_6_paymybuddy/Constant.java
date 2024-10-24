@@ -27,5 +27,4 @@ public interface Constant {
     byte TRANSACTION_FAIL_RECEIVER = 2;
     byte TRANSACTION_FAIL_LABEL = 3;
     byte TRANSACTION_FAIL_BALANCE = 4;
-
 }
