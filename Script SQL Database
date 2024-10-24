@@ -1,0 +1,30 @@
+create table beneficiaries
+(
+    id       int unsigned auto_increment
+        primary key,
+    holder   int unsigned not null,
+    relation int unsigned not null
+);
+
+create table transactions
+(
+    id        int unsigned auto_increment
+        primary key,
+    sender    int unsigned not null,
+    receiver  int unsigned not null,
+    timestamp mediumtext   not null,
+    amount    float        not null,
+    label     varchar(21)  not null
+);
+
+create table users
+(
+    id       int unsigned auto_increment
+        primary key,
+    username varchar(17)            not null,
+    email    varchar(24)            not null,
+    password varchar(65)            not null,
+    balance  float       default 0  not null,
+    token    varchar(44) default '' not null
+);
+
