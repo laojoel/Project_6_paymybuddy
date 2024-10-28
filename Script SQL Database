@@ -28,3 +28,11 @@ create table users
     token    varchar(44) default '' not null
 );
 
+insert into users (username, email, password, balance, token) values ("test, "test@mail.com", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", 256, "x"); 
+insert into users (username, email, password, balance, token) values ("frank, "frank@mail.com", "77646f5a4f3166637627abe998e7a1470fe72d8b430f067dafa86263f1f23f94", 512, "x");
+insert into users (username, email, password, balance, token) values ("alexia, "Alexia@mail.com", "4cba30b1576a69a36b00387b97a96a937699eecc1e6965e95e468fe431c6a7e6", 1024, "x");
+
+insert into transactions (sender, receiver, timestamp, amount, label) values (1, 2 , 1727947306559, 155, "vacances");
+
+insert into beneficiaries (holder, relation) values (1, 2);
+
